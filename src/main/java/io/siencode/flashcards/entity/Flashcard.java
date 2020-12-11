@@ -12,7 +12,10 @@ public class Flashcard {
     private String secondSentence;
     @ManyToOne
     @JoinColumn (name = "ACC_ID", referencedColumnName = "id")
-    Account account;
+    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "id")
+    private FlashcardCategory flashcardCategory;
 
     public long getId() {
         return id;
@@ -46,11 +49,11 @@ public class Flashcard {
         this.account = account;
     }
 
-    public Account getAccountEntity() {
-        return account;
+    public FlashcardCategory getFlashcardCategory() {
+        return flashcardCategory;
     }
 
-    public void setAccountEntity(Account account) {
-        this.account = account;
+    public void setFlashcardCategory(FlashcardCategory flashcardCategory) {
+        this.flashcardCategory = flashcardCategory;
     }
 }
