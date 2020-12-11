@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class SelectedWord {
+public class SelectedFlashcard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate localDate;
     @ManyToOne
-    @JoinColumn (name = "WORD_ID", referencedColumnName = "id")
-    Word wordEntity;
+    @JoinColumn (name = "FLASHCARD_ID", referencedColumnName = "id")
+    Flashcard wordEntity;
 
     public long getId() {
         return id;
@@ -30,11 +30,11 @@ public class SelectedWord {
         this.localDate = localDate;
     }
 
-    public Word getWordEntity() {
+    public Flashcard getWordEntity() {
         return wordEntity;
     }
 
-    public void setWordEntity(Word wordEntity) {
+    public void setWordEntity(Flashcard wordEntity) {
         this.wordEntity = wordEntity;
     }
 }

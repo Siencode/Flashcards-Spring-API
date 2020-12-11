@@ -1,11 +1,11 @@
 package io.siencode.flashcards;
 
 import io.siencode.flashcards.entity.Account;
-import io.siencode.flashcards.entity.SelectedWord;
-import io.siencode.flashcards.entity.Word;
+import io.siencode.flashcards.entity.SelectedFlashcard;
+import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.repo.AccountRepository;
-import io.siencode.flashcards.repo.SelectedWordRepository;
-import io.siencode.flashcards.repo.WordRepository;
+import io.siencode.flashcards.repo.SelectedFlashcardRepository;
+import io.siencode.flashcards.repo.FlashcardRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,24 +16,24 @@ import java.time.LocalDate;
 public class LoadData {
 
     @Bean
-    CommandLineRunner commandLineRunner(AccountRepository accountRepository, SelectedWordRepository selectedWordRepository, WordRepository wordRepository){
+    CommandLineRunner commandLineRunner(AccountRepository accountRepository, SelectedFlashcardRepository selectedFlashcardRepository, FlashcardRepository flashcardRepository){
         return args -> {
             Account account = new Account();
             account.setUsername("admin");
             account.setPassword("password");
 
-            Word word = new Word();
+            Flashcard word = new Flashcard();
             word.setAccountEntity(account);
-            word.setWord_ENG("dog");
-            word.setWord_PL("pies");
+            word.setFirstSentence("pies");
+            word.setSecondSentence("dog");
 
-            SelectedWord selectedWord = new SelectedWord();
-            selectedWord.setLocalDate(LocalDate.now());
-            selectedWord.setWordEntity(word);
+            SelectedFlashcard selectedFlashcard = new SelectedFlashcard();
+            selectedFlashcard.setLocalDate(LocalDate.now());
+            selectedFlashcard.setWordEntity(word);
 
             accountRepository.save(account);
-            wordRepository.save(word);
-            selectedWordRepository.save(selectedWord);
+            flashcardRepository.save(word);
+            selectedFlashcardRepository.save(selectedFlashcard);
         };
     }
 
