@@ -33,14 +33,16 @@ public class LoadData {
             word.setSecondSentence("dog");
             word.setFlashcardCategory(flashcardCategory);
 
+            /* learning mode
             SelectedFlashcard selectedFlashcard = new SelectedFlashcard();
             selectedFlashcard.setLocalDate(LocalDate.now());
             selectedFlashcard.setWordEntity(word);
+            selectedFlashcardRepository.save(selectedFlashcard);*/
 
             accountRepository.save(account);
             flashcardCategoryRepository.save(flashcardCategory);
             flashcardRepository.save(word);
-            selectedFlashcardRepository.save(selectedFlashcard);
+
         };
     }
 
