@@ -14,6 +14,7 @@ public interface FlashcardService {
     void saveFlashcard(FlashcardModel flashcardModel);
     void editFlashcard(Long id, FlashcardModel flashcardModel);
     void deleteFlashcard(Long id);
+    List<Flashcard> findAllFlashcardsByCategory(Long categoryId);
 
     List<FlashcardCategory> findAllFlashcardCategories();
     Boolean flashcardCategoryIsExist(Long id);

@@ -32,6 +32,16 @@ public class FlashcardController {
         }
     }
 
+    @GetMapping("/flashcards/{id}")
+    public List<Flashcard> getWords(@PathVariable Long id) {
+        List<Flashcard> flashcards = flashcardService.findAllFlashcardsByCategory(id);
+        if (flashcards == null || flashcards.size() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } else {
+            return flashcards;
+        }
+    }
+
     @PostMapping("/flashcard")
     public void addWord(@RequestBody FlashcardModel flashcardModel) {
         flashcardService.saveFlashcard(flashcardModel);

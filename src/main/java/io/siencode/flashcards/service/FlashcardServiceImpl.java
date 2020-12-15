@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlashcardServiceImpl implements FlashcardService{
@@ -72,6 +73,11 @@ public class FlashcardServiceImpl implements FlashcardService{
     @Override
     public void deleteFlashcard(Long id) {
         flashcardRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Flashcard> findAllFlashcardsByCategory(Long categoryId) {
+        return flashcardRepository.findAll().stream().filter(flashcard -> flashcard.getFlashcardCategory().getId() == categoryId).collect(Collectors.toList());
     }
 
     @Override
