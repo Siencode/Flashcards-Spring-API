@@ -119,6 +119,12 @@ public class FlashcardServiceImpl implements FlashcardService{
 
     @Override
     public void deleteFlashcardCategory(Long id) {
+        FlashcardCategory defaultFlashcardCategory = flashcardCategoryRepository.findById(1l).get();
+        FlashcardCategory flashcardCategoryToDelete = flashcardCategoryRepository.findById(id).get();
+        // modification of flashcards to default categories before deletion
+        flashcardRepository.findAll().stream()
+                .filter(flashcard -> flashcard.getFlashcardCategory().getId() == flashcardCategoryToDelete.getId())
+                .forEach(flashcard -> flashcard.setFlashcardCategory(defaultFlashcardCategory));
         flashcardCategoryRepository.deleteById(id);
     }
 }
