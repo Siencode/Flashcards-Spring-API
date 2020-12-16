@@ -63,6 +63,8 @@ public class FlashcardServiceImpl implements FlashcardService{
                flashcardRepository.findById(id).map(flashcard -> {
                flashcard.setFirstSentence(flashcardModel.getFirstSentence());
                flashcard.setSecondSentence(flashcardModel.getSecondSentence());
+               FlashcardCategory flashcardCategory = flashcardCategoryRepository.findById(flashcardModel.getFlashcardCategoryId()).get();
+               flashcard.setFlashcardCategory(flashcardCategory);
                return flashcardRepository.save(flashcard);
            }).orElseThrow();
        } catch (Exception exception) {

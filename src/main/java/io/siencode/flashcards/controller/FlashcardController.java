@@ -49,7 +49,7 @@ public class FlashcardController {
 
     @PutMapping("/flashcard/{id}")
     public void editFlashcard(@RequestBody FlashcardModel flashcardModel, @PathVariable Long id) {
-        if (flashcardService.flashcardIsExist(id)) {
+        if (flashcardService.flashcardIsExist(id) && flashcardService.flashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
             flashcardService.editFlashcard(id, flashcardModel);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
