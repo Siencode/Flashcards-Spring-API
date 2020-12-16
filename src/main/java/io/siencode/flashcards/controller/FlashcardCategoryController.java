@@ -43,7 +43,10 @@ public class FlashcardCategoryController {
 
     @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable Long id) {
-        if (flashcardService.flashcardCategoryIsExist(id)) {
+        if (id == 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The default category cannot be deleted");
+        }
+        else if (flashcardService.flashcardCategoryIsExist(id)) {
             flashcardService.deleteFlashcardCategory(id);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -52,7 +55,12 @@ public class FlashcardCategoryController {
 
     @PostMapping("/category")
     public void addCategory(@RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        flashcardService.saveFlashcardCategories(flashcardCategoryModel);
+        if (flashcardService.flashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
+            flashcardService.saveFlashcardCategories(flashcardCategoryModel);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The category exists. Can't be duplicated.");
+        } else {
+            flashcardService.saveFlashcardCategories(flashcardCategoryModel);
+        }
     }
 
     @PutMapping("/category/{id}")

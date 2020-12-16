@@ -18,6 +18,7 @@ public interface FlashcardService {
 
     List<FlashcardCategory> findAllFlashcardCategories();
     Boolean flashcardCategoryIsExist(Long id);
+    Boolean flashcardCategoryIsExist(String categoryName);
     FlashcardCategory findFlashcardCategoryByID(Long id);
     void saveFlashcardCategories(FlashcardCategoryModel flashcardCategoryModel);
     void editFlashCardCategory(Long id, FlashcardCategoryModel flashcardCategoryModel);

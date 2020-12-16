@@ -91,6 +91,11 @@ public class FlashcardServiceImpl implements FlashcardService{
     }
 
     @Override
+    public Boolean flashcardCategoryIsExist(String categoryName) {
+        return flashcardCategoryRepository.existsByCategoryName(categoryName);
+    }
+
+    @Override
     public FlashcardCategory findFlashcardCategoryByID(Long id) {
         return flashcardCategoryRepository.findById(id).get();
     }
