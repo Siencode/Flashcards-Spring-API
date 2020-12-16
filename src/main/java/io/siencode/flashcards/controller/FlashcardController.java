@@ -26,7 +26,7 @@ public class FlashcardController {
     public List<Flashcard> getWords() {
         List<Flashcard> flashcards = flashcardService.findAllFlashcards();
         if (flashcards == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No flashcard added");
         } else {
             return flashcards;
         }
@@ -36,7 +36,7 @@ public class FlashcardController {
     public List<Flashcard> getWords(@PathVariable Long id) {
         List<Flashcard> flashcards = flashcardService.findAllFlashcardsByCategory(id);
         if (flashcards == null || flashcards.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard does not exist. ID:" + id);
         } else {
             return flashcards;
         }
@@ -52,7 +52,7 @@ public class FlashcardController {
         if (flashcardService.flashcardIsExist(id) && flashcardService.flashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
             flashcardService.editFlashcard(id, flashcardModel);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard or category do not exist");
         }
     }
 
@@ -61,7 +61,7 @@ public class FlashcardController {
         if (flashcardService.flashcardIsExist(id)) {
             flashcardService.deleteFlashcard(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard does not exist. ID:" + id);
         }
     }
 }

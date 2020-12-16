@@ -37,7 +37,7 @@ public class FlashcardCategoryController {
         if (flashcardService.flashcardCategoryIsExist(id)) {
             return flashcardService.findFlashcardCategoryByID(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);
         }
     }
 
@@ -49,7 +49,7 @@ public class FlashcardCategoryController {
         else if (flashcardService.flashcardCategoryIsExist(id)) {
             flashcardService.deleteFlashcardCategory(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID:" + id);
         }
     }
 
@@ -68,7 +68,7 @@ public class FlashcardCategoryController {
         if (flashcardService.flashcardCategoryIsExist(id)) {
             flashcardService.editFlashCardCategory(id, flashcardCategoryModel);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);
         }
     }
 
