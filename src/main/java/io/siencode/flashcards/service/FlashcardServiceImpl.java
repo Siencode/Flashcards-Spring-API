@@ -1,13 +1,13 @@
 package io.siencode.flashcards.service;
 
-import io.siencode.flashcards.entity.Account;
 import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.entity.FlashcardCategory;
+import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.model.FlashcardModel;
-import io.siencode.flashcards.repo.AccountRepository;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
+import io.siencode.flashcards.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,13 +21,13 @@ public class FlashcardServiceImpl implements FlashcardService{
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardCategoryRepository flashcardCategoryRepository;
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public FlashcardServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository, AccountRepository accountRepository) {
+    public FlashcardServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository, UserRepository userRepository) {
         this.flashcardRepository = flashcardRepository;
         this.flashcardCategoryRepository = flashcardCategoryRepository;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FlashcardServiceImpl implements FlashcardService{
     public void saveFlashcard(FlashcardModel flashcardModel) {
         try {
             //default account
-        Account account = accountRepository.getOne(1l);
+        User account = userRepository.getOne(1l);
         FlashcardCategory flashcardCategory = flashcardCategoryRepository.getOne(flashcardModel.getFlashcardCategoryId());
         Flashcard flashcard = new Flashcard();
         flashcard.setAccount(account);

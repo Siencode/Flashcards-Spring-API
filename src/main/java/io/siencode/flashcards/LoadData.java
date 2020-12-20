@@ -1,34 +1,35 @@
 package io.siencode.flashcards;
 
-import io.siencode.flashcards.entity.Account;
+import io.siencode.flashcards.config.BCryptEncoderConfig;
 import io.siencode.flashcards.entity.FlashcardCategory;
-import io.siencode.flashcards.entity.SelectedFlashcard;
 import io.siencode.flashcards.entity.Flashcard;
-import io.siencode.flashcards.repo.AccountRepository;
+import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.SelectedFlashcardRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
+import io.siencode.flashcards.repo.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.LocalDate;
 
 @Configuration
 public class LoadData {
 
     @Bean
-    CommandLineRunner commandLineRunner(AccountRepository accountRepository, SelectedFlashcardRepository selectedFlashcardRepository, FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository){
+    CommandLineRunner commandLineRunner(
+            SelectedFlashcardRepository selectedFlashcardRepository, UserRepository userRepository, BCryptEncoderConfig bCryptEncoderConfig, FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository){
         return args -> {
-            Account account = new Account();
-            account.setUsername("admin");
-            account.setPassword("password");
+
+            User user = new User();
+            user.setUsername("Admin");
+            user.setPassword(bCryptEncoderConfig.passwordEncoder().encode("password"));
+
 
             FlashcardCategory flashcardCategory = new FlashcardCategory();
             flashcardCategory.setCategoryName("Default");
 
             Flashcard word = new Flashcard();
-            word.setAccount(account);
+            word.setAccount(user);
             word.setFirstSentence("pies");
             word.setSecondSentence("dog");
             word.setFlashcardCategory(flashcardCategory);
@@ -39,7 +40,7 @@ public class LoadData {
             selectedFlashcard.setWordEntity(word);
             selectedFlashcardRepository.save(selectedFlashcard);*/
 
-            accountRepository.save(account);
+            userRepository.save(user);
             flashcardCategoryRepository.save(flashcardCategory);
             flashcardRepository.save(word);
 
