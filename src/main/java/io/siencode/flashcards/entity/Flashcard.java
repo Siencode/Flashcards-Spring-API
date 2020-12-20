@@ -11,7 +11,7 @@ public class Flashcard {
     private String firstSentence;
     private String secondSentence;
     @ManyToOne
-    @JoinColumn (name = "ACC_ID", referencedColumnName = "id")
+    @JoinColumn (name = "USER_ID", referencedColumnName = "id")
     private User user;
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "id")

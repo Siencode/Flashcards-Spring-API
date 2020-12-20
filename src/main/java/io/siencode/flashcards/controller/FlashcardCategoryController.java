@@ -2,6 +2,7 @@ package io.siencode.flashcards.controller;
 
 import io.siencode.flashcards.entity.FlashcardCategory;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
+import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.FlashcardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,16 +16,16 @@ import java.util.List;
 @RequestMapping("/api")
 public class FlashcardCategoryController {
 
-    private final FlashcardServiceImpl flashcardService;
+    private final FlashcardCategoryServiceImpl flashcardCategoryService;
 
     @Autowired
-    public FlashcardCategoryController(FlashcardServiceImpl flashcardService) {
-        this.flashcardService = flashcardService;
+    public FlashcardCategoryController(FlashcardCategoryServiceImpl flashcardCategoryService) {
+        this.flashcardCategoryService = flashcardCategoryService;
     }
 
     @GetMapping("/categories")
     public List<FlashcardCategory> getFlashcardCategories() {
-        List<FlashcardCategory> flashcardCategories = flashcardService.findAllFlashcardCategories();
+        List<FlashcardCategory> flashcardCategories = flashcardCategoryService.findAllFlashcardCategories();
         if (flashcardCategories == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } else {
@@ -34,8 +35,8 @@ public class FlashcardCategoryController {
 
     @GetMapping("/category/{id}")
     public FlashcardCategory getFlashcardCategory(@PathVariable Long id) {
-        if (flashcardService.flashcardCategoryIsExist(id)) {
-            return flashcardService.findFlashcardCategoryByID(id);
+        if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
+            return flashcardCategoryService.findFlashcardCategoryByID(id);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);
         }
@@ -46,8 +47,8 @@ public class FlashcardCategoryController {
         if (id == 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The default category cannot be deleted");
         }
-        else if (flashcardService.flashcardCategoryIsExist(id)) {
-            flashcardService.deleteFlashcardCategory(id);
+        else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
+            flashcardCategoryService.deleteFlashcardCategory(id);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID:" + id);
         }
@@ -55,18 +56,18 @@ public class FlashcardCategoryController {
 
     @PostMapping("/category")
     public void addCategory(@RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        if (flashcardService.flashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
-            flashcardService.saveFlashcardCategories(flashcardCategoryModel);
+        if (flashcardCategoryService.flashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
+            flashcardCategoryService.saveFlashcardCategories(flashcardCategoryModel);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The category exists. Can't be duplicated.");
         } else {
-            flashcardService.saveFlashcardCategories(flashcardCategoryModel);
+            flashcardCategoryService.saveFlashcardCategories(flashcardCategoryModel);
         }
     }
 
     @PutMapping("/category/{id}")
     public void editCategory(@PathVariable Long id, @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        if (flashcardService.flashcardCategoryIsExist(id)) {
-            flashcardService.editFlashCardCategory(id, flashcardCategoryModel);
+        if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
+            flashcardCategoryService.editFlashCardCategory(id, flashcardCategoryModel);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);
         }

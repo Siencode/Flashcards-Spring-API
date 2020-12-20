@@ -2,6 +2,7 @@ package io.siencode.flashcards.controller;
 
 import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.model.FlashcardModel;
+import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.FlashcardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,12 @@ import java.util.List;
 public class FlashcardController {
 
     private final FlashcardServiceImpl flashcardService;
+    private final FlashcardCategoryServiceImpl flashcardCategoryService;
 
     @Autowired
-    public FlashcardController(FlashcardServiceImpl flashcardService) {
+    public FlashcardController(FlashcardServiceImpl flashcardService, FlashcardCategoryServiceImpl flashcardCategoryService) {
         this.flashcardService = flashcardService;
+        this.flashcardCategoryService = flashcardCategoryService;
     }
 
     @GetMapping("/flashcards")
@@ -49,7 +52,7 @@ public class FlashcardController {
 
     @PutMapping("/flashcard/{id}")
     public void editFlashcard(@RequestBody FlashcardModel flashcardModel, @PathVariable Long id) {
-        if (flashcardService.flashcardIsExist(id) && flashcardService.flashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
+        if (flashcardService.flashcardIsExist(id) && flashcardCategoryService.flashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
             flashcardService.editFlashcard(id, flashcardModel);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard or category do not exist");
