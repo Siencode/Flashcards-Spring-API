@@ -21,13 +21,13 @@ public class FlashcardServiceImpl implements FlashcardService{
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardCategoryRepository flashcardCategoryRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public FlashcardServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository, UserRepository userRepository) {
+    public FlashcardServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository, UserService userService) {
         this.flashcardRepository = flashcardRepository;
         this.flashcardCategoryRepository = flashcardCategoryRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -43,11 +43,10 @@ public class FlashcardServiceImpl implements FlashcardService{
     @Override
     public void saveFlashcard(FlashcardModel flashcardModel) {
         try {
-            //default account
-        User account = userRepository.getOne(1l);
+        User user = userService.getAuthorizedUser();
         FlashcardCategory flashcardCategory = flashcardCategoryRepository.getOne(flashcardModel.getFlashcardCategoryId());
         Flashcard flashcard = new Flashcard();
-        flashcard.setAccount(account);
+        flashcard.setAccount(user);
         flashcard.setFlashcardCategory(flashcardCategory);
         flashcard.setFirstSentence(flashcardModel.getFirstSentence());
         flashcard.setSecondSentence(flashcardModel.getSecondSentence());

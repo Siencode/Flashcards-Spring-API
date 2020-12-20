@@ -3,6 +3,7 @@ package io.siencode.flashcards;
 import io.siencode.flashcards.config.BCryptEncoderConfig;
 import io.siencode.flashcards.entity.FlashcardCategory;
 import io.siencode.flashcards.entity.Flashcard;
+import io.siencode.flashcards.entity.Role;
 import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.SelectedFlashcardRepository;
@@ -23,6 +24,7 @@ public class LoadData {
             User user = new User();
             user.setUsername("Admin");
             user.setPassword(bCryptEncoderConfig.passwordEncoder().encode("password"));
+            user.grantAuthority(Role.ROLE_ADMIN);
 
 
             FlashcardCategory flashcardCategory = new FlashcardCategory();

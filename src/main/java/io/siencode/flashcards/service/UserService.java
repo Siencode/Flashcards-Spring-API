@@ -1,5 +1,6 @@
 package io.siencode.flashcards.service;
 
+import io.siencode.flashcards.entity.Role;
 import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.UserModel;
 import io.siencode.flashcards.repo.UserRepository;
@@ -25,6 +26,7 @@ public class UserService {
         User user = new User();
         user.setUsername(userModel.getUsername());
         user.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        user.grantAuthority(Role.ROLE_USER);
         userRepository.save(user);
 
     }
