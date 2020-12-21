@@ -3,11 +3,9 @@ package io.siencode.flashcards.service;
 import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.entity.FlashcardCategory;
 import io.siencode.flashcards.entity.User;
-import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.model.FlashcardModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
-import io.siencode.flashcards.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,13 +29,18 @@ public class FlashcardServiceImpl implements FlashcardService{
     }
 
     @Override
-    public List<Flashcard> findAllFlashcards() {
-        return flashcardRepository.findAll();
+    public List<Flashcard> findAllUserFlashcards() {
+        return flashcardRepository.findAllByUser(userService.getAuthorizedUser());
     }
 
     @Override
     public Boolean flashcardIsExist(Long id) {
-        return flashcardRepository.existsById(id);
+        List<Flashcard> flashcardList = findAllUserFlashcards();
+        if (flashcardList == null || flashcardList.isEmpty()) {
+            return false;
+        } else {
+            return flashcardList.stream().anyMatch(flashcard -> flashcard.getId() == id);
+        }
     }
 
     @Override

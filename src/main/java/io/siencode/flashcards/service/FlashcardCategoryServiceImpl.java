@@ -30,7 +30,9 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     @Override
     public Boolean flashcardCategoryIsExist(Long id) {
         List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
-        if (flashcardCategories == null || flashcardCategories.isEmpty()) {
+        if (id == 1) {
+            return true;
+        } else if (flashcardCategories == null || flashcardCategories.isEmpty()) {
             return false;
         } else {
             return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getId() == id);

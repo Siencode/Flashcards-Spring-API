@@ -55,7 +55,9 @@ public class FlashcardCategoryController {
 
     @PutMapping("/category/{id}")
     public void editCategory(@PathVariable Long id, @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
+        if (id == 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The default category cannot be edited");
+        } else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
             flashcardCategoryService.editFlashCardCategory(id, flashcardCategoryModel);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);

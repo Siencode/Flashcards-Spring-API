@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FlashcardService {
 
-    List<Flashcard> findAllFlashcards();
+    List<Flashcard> findAllUserFlashcards();
     Boolean flashcardIsExist(Long id);
     void saveFlashcard(FlashcardModel flashcardModel);
     void editFlashcard(Long id, FlashcardModel flashcardModel);

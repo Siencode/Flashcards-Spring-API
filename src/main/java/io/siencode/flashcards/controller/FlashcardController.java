@@ -27,7 +27,7 @@ public class FlashcardController {
 
     @GetMapping("/flashcards")
     public List<Flashcard> getWords() {
-        List<Flashcard> flashcards = flashcardService.findAllFlashcards();
+        List<Flashcard> flashcards = flashcardService.findAllUserFlashcards();
         if (flashcards == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No flashcard added");
         } else {
@@ -38,7 +38,7 @@ public class FlashcardController {
     @GetMapping("/flashcards/{id}")
     public List<Flashcard> getWords(@PathVariable Long id) {
         List<Flashcard> flashcards = flashcardService.findAllFlashcardsByCategory(id);
-        if (flashcards == null || flashcards.size() == 0) {
+        if (flashcards == null || flashcards.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard does not exist. ID:" + id);
         } else {
             return flashcards;
