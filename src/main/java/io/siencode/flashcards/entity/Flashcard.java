@@ -41,12 +41,12 @@ public class Flashcard {
         this.secondSentence = secondSentence;
     }
 
-    public User getAccount() {
+    public User getUser() {
         return user;
     }
 
-    public void setAccount(User account) {
-        this.user = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public FlashcardCategory getFlashcardCategory() {

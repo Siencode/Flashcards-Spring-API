@@ -1,11 +1,10 @@
 package io.siencode.flashcards.service;
 
 import io.siencode.flashcards.entity.FlashcardCategory;
+import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
-import io.siencode.flashcards.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,26 +14,37 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardCategoryRepository flashcardCategoryRepository;
+    private final UserService userService;
 
-    @Autowired
-    public FlashcardCategoryServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository) {
+    public FlashcardCategoryServiceImpl(FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository, UserService userService) {
         this.flashcardRepository = flashcardRepository;
         this.flashcardCategoryRepository = flashcardCategoryRepository;
+        this.userService = userService;
     }
 
     @Override
-    public List<FlashcardCategory> findAllFlashcardCategories() {
-        return flashcardCategoryRepository.findAll();
+    public List<FlashcardCategory> findAllUserFlashcardCategories() {
+        return flashcardCategoryRepository.findAllByUser(userService.getAuthorizedUser());
     }
 
     @Override
     public Boolean flashcardCategoryIsExist(Long id) {
-        return flashcardCategoryRepository.existsById(id);
+        List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
+        if (flashcardCategories == null || flashcardCategories.isEmpty()) {
+            return false;
+        } else {
+            return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getId() == id);
+        }
     }
 
     @Override
     public Boolean flashcardCategoryIsExist(String categoryName) {
-        return flashcardCategoryRepository.existsByCategoryName(categoryName);
+        List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
+        if (flashcardCategories == null || flashcardCategories.isEmpty()) {
+            return false;
+        } else {
+            return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getCategoryName().equals(categoryName));
+        }
     }
 
     @Override
@@ -46,6 +56,7 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     public void saveFlashcardCategories(FlashcardCategoryModel flashcardCategoryModel) {
         FlashcardCategory flashcardCategory = new FlashcardCategory();
         flashcardCategory.setCategoryName(flashcardCategoryModel.getCategoryName());
+        flashcardCategory.setUser(userService.getAuthorizedUser());
         flashcardCategoryRepository.save(flashcardCategory);
     }
 
@@ -53,6 +64,7 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     public void editFlashCardCategory(Long id, FlashcardCategoryModel flashcardCategoryModel) {
         flashcardCategoryRepository.findById(id).map(flashcardCategory -> {
             flashcardCategory.setCategoryName(flashcardCategoryModel.getCategoryName());
+            flashcardCategory.setUser(userService.getAuthorizedUser());
             return flashcardCategoryRepository.save(flashcardCategory);
         }).orElseThrow();
     }

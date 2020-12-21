@@ -31,7 +31,7 @@ public class LoadData {
             flashcardCategory.setCategoryName("Default");
 
             Flashcard word = new Flashcard();
-            word.setAccount(user);
+            word.setUser(user);
             word.setFirstSentence("pies");
             word.setSecondSentence("dog");
             word.setFlashcardCategory(flashcardCategory);

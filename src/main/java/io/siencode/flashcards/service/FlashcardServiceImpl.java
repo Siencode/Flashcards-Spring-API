@@ -46,7 +46,7 @@ public class FlashcardServiceImpl implements FlashcardService{
         User user = userService.getAuthorizedUser();
         FlashcardCategory flashcardCategory = flashcardCategoryRepository.getOne(flashcardModel.getFlashcardCategoryId());
         Flashcard flashcard = new Flashcard();
-        flashcard.setAccount(user);
+        flashcard.setUser(user);
         flashcard.setFlashcardCategory(flashcardCategory);
         flashcard.setFirstSentence(flashcardModel.getFirstSentence());
         flashcard.setSecondSentence(flashcardModel.getSecondSentence());

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FlashcardCategoryService {
 
-    List<FlashcardCategory> findAllFlashcardCategories();
+    List<FlashcardCategory> findAllUserFlashcardCategories();
     Boolean flashcardCategoryIsExist(Long id);
     Boolean flashcardCategoryIsExist(String categoryName);
     FlashcardCategory findFlashcardCategoryByID(Long id);
