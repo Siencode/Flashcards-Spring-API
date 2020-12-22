@@ -39,7 +39,7 @@ public class FlashcardController {
     public List<Flashcard> getWords(@PathVariable Long id) {
         List<Flashcard> flashcards = flashcardService.findAllFlashcardsByCategory(id);
         if (flashcards == null || flashcards.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard does not exist. ID:" + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcards do not exist. Category ID:" + id);
         } else {
             return flashcards;
         }

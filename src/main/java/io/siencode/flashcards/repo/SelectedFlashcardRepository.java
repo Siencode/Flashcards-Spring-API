@@ -1,7 +1,0 @@
-package io.siencode.flashcards.repo;
-
-import io.siencode.flashcards.entity.SelectedFlashcard;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface SelectedFlashcardRepository extends JpaRepository<SelectedFlashcard, Long> {
-}
