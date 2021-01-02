@@ -1,12 +1,10 @@
 package io.siencode.flashcards.service;
 
 import io.siencode.flashcards.entity.FlashcardCategory;
-import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -29,22 +27,24 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
 
     @Override
     public Boolean flashcardCategoryIsExist(Long id) {
-        List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
-        // default category
+        // default category id = 1
         if (id == 1) {
             return true;
-        } else if (flashcardCategories == null || flashcardCategories.isEmpty()) {
-            return false;
+        } else if (flashcardRepository.existsById(id)) {
+            String authorizedUserUsername = userService.getAuthorizedUser().getUsername();
+            return flashcardRepository.getOne(id).getUser().getUsername().equals(authorizedUserUsername);
         } else {
-            return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getId() == id);
+            return false;
         }
     }
 
     @Override
     public Boolean flashcardCategoryIsExist(String categoryName) {
         List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
-        if (flashcardCategories == null || flashcardCategories.isEmpty()) {
+        if (flashcardCategories == null) {
             return false;
+        } else if (categoryName.toLowerCase().equals("default")) {
+            return true;
         } else {
             return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getCategoryName().equals(categoryName));
         }

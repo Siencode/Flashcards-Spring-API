@@ -27,7 +27,7 @@ public class LoadData {
 
 
             FlashcardCategory flashcardCategory = new FlashcardCategory();
-            flashcardCategory.setCategoryName("Default");
+            flashcardCategory.setCategoryName("default");
 
             Flashcard word = new Flashcard();
             word.setUser(user);
