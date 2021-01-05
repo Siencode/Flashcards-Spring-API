@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class FlashcardCategoryController {
     @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable Long id) {
         if (id == 1) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The default category cannot be deleted");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The default category cannot be deleted");
         }
         else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
             flashcardCategoryService.deleteFlashcardCategory(id);
@@ -45,16 +46,16 @@ public class FlashcardCategoryController {
     }
 
     @PostMapping("/category")
-    public void addCategory(@RequestBody FlashcardCategoryModel flashcardCategoryModel) {
+    public void addCategory(@Valid @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
         if (flashcardCategoryService.flashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The category exists. Can't be duplicated.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The category exists. Can't be duplicated.");
         } else {
             flashcardCategoryService.saveFlashcardCategories(flashcardCategoryModel);
         }
     }
 
     @PutMapping("/category/{id}")
-    public void editCategory(@PathVariable Long id, @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
+    public void editCategory(@PathVariable Long id, @Valid @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
         if (id == 1) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The default category cannot be edited");
         } else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {

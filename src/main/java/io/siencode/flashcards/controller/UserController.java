@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
@@ -19,9 +20,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void userRegister(@RequestBody UserModel userModel) {
+    public void userRegister(@Valid @RequestBody UserModel userModel) {
         if (userService.userIsExist(userModel.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The username exists. Can't be duplicated.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The username exists. Can't be duplicated.");
         } else {
             userService.saveUser(userModel);
         }

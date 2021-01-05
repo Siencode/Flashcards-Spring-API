@@ -17,11 +17,11 @@ public class LoadData {
 
     @Bean
     CommandLineRunner commandLineRunner(
-             UserRepository userRepository, BCryptEncoderConfig bCryptEncoderConfig, FlashcardRepository flashcardRepository, FlashcardCategoryRepository flashcardCategoryRepository){
+             UserRepository userRepository, BCryptEncoderConfig bCryptEncoderConfig, FlashcardCategoryRepository flashcardCategoryRepository){
         return args -> {
 
             User user = new User();
-            user.setUsername("user");
+            user.setUsername("Administrator");
             user.setPassword(bCryptEncoderConfig.passwordEncoder().encode("password"));
             user.grantAuthority(Role.ROLE_USER);
 
@@ -29,16 +29,8 @@ public class LoadData {
             FlashcardCategory flashcardCategory = new FlashcardCategory();
             flashcardCategory.setCategoryName("default");
 
-            Flashcard word = new Flashcard();
-            word.setUser(user);
-            word.setFirstSentence("pies");
-            word.setSecondSentence("dog");
-            word.setFlashcardCategory(flashcardCategory);
-
             userRepository.save(user);
             flashcardCategoryRepository.save(flashcardCategory);
-            flashcardRepository.save(word);
-
         };
     }
 

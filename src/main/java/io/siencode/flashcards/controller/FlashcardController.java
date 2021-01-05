@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,12 +47,12 @@ public class FlashcardController {
     }
 
     @PostMapping("/flashcard")
-    public void addWord(@RequestBody FlashcardModel flashcardModel) {
+    public void addWord(@Valid @RequestBody FlashcardModel flashcardModel) {
         flashcardService.saveFlashcard(flashcardModel);
     }
 
     @PutMapping("/flashcard/{id}")
-    public void editFlashcard(@RequestBody FlashcardModel flashcardModel, @PathVariable Long id) {
+    public void editFlashcard(@Valid @RequestBody FlashcardModel flashcardModel, @PathVariable Long id) {
         if (flashcardService.flashcardIsExist(id) && flashcardCategoryService.flashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
             flashcardService.editFlashcard(id, flashcardModel);
         } else {

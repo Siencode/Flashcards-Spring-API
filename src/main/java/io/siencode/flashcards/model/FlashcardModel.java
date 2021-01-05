@@ -1,8 +1,15 @@
 package io.siencode.flashcards.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class FlashcardModel {
 
+    @NotNull(message = "First sentence cannot be null")
+    @Size(min = 1, max = 200, message = "Incorrect first sentence length")
     private String firstSentence;
+    @Size(min = 1, max = 200, message = "Incorrect second sentence length")
+    @NotNull(message = "Second sentence cannot be null")
     private String secondSentence;
     private long flashcardCategoryId;
 
