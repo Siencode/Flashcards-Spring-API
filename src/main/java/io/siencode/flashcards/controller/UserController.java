@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
@@ -17,6 +18,11 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/userinfo")
+    public String getUsername(Principal principal) {
+        return principal.getName();
     }
 
     @PostMapping("/register")
