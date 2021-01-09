@@ -1,6 +1,8 @@
 package io.siencode.flashcards.controller;
 
+import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.model.UserModel;
+import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
+    private final FlashcardCategoryServiceImpl flashcardCategoryService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FlashcardCategoryServiceImpl flashcardCategoryService) {
         this.userService = userService;
+        this.flashcardCategoryService = flashcardCategoryService;
     }
 
     @GetMapping("/userinfo")
@@ -31,6 +35,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The username exists. Can't be duplicated.");
         } else {
             userService.saveUser(userModel);
+            flashcardCategoryService.saveDefaultFlashcardCategories(userModel.getUsername());
         }
     }
 

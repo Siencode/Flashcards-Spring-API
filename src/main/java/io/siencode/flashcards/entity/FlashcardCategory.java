@@ -1,5 +1,7 @@
 package io.siencode.flashcards.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class FlashcardCategory {
     private long id;
     private String categoryName;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn (name = "USER_ID", referencedColumnName = "id")
     private User user;

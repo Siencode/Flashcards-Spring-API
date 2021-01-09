@@ -28,7 +28,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userModel.getPassword()));
         user.grantAuthority(Role.ROLE_USER);
         userRepository.save(user);
-
     }
 
     public Boolean userIsExist(String username) {
@@ -45,5 +44,10 @@ public class UserService {
         } else {
             throw new RuntimeException(userName + " not found");
         }
+    }
+
+    public User getUserByUsername(String userName) {
+        Optional<User> userOptional = userRepository.findByUsername(userName);
+        return userOptional.orElse(null);
     }
 }

@@ -10,7 +10,7 @@ public interface FlashcardCategoryService {
     List<FlashcardCategory> findAllUserFlashcardCategories();
     Boolean flashcardCategoryIsExist(Long id);
     Boolean flashcardCategoryIsExist(String categoryName);
-    FlashcardCategory findFlashcardCategoryByID(Long id);
+    void saveDefaultFlashcardCategories(String userName);
     void saveFlashcardCategories(FlashcardCategoryModel flashcardCategoryModel);
     void editFlashCardCategory(Long id, FlashcardCategoryModel flashcardCategoryModel);
     void deleteFlashcardCategory(Long id);

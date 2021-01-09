@@ -1,6 +1,7 @@
 package io.siencode.flashcards.service;
 
 import io.siencode.flashcards.entity.FlashcardCategory;
+import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
@@ -51,8 +52,12 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     }
 
     @Override
-    public FlashcardCategory findFlashcardCategoryByID(Long id) {
-        return flashcardCategoryRepository.findById(id).get();
+    public void saveDefaultFlashcardCategories(String userName) {
+        User user = userService.getUserByUsername(userName);
+        FlashcardCategory defaultFlashcardCategory = new FlashcardCategory();
+        defaultFlashcardCategory.setCategoryName("Default");
+        defaultFlashcardCategory.setUser(user);
+        flashcardCategoryRepository.save(defaultFlashcardCategory);
     }
 
     @Override
