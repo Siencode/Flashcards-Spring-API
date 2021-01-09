@@ -1,6 +1,5 @@
 package io.siencode.flashcards.controller;
 
-import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.model.UserModel;
 import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.UserService;

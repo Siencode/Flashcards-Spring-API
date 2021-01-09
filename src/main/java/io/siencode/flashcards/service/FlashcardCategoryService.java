@@ -8,8 +8,10 @@ import java.util.List;
 public interface FlashcardCategoryService {
 
     List<FlashcardCategory> findAllUserFlashcardCategories();
-    Boolean flashcardCategoryIsExist(Long id);
-    Boolean flashcardCategoryIsExist(String categoryName);
+    Boolean userFlashcardCategoryIsExist(Long id);
+    Boolean userFlashcardCategoryIsExist(String categoryName);
+    Boolean userFlashcardCategoryIsDefault(Long id);
+    Long findUserDefaultCategoryId();
     void saveDefaultFlashcardCategories(String userName);
     void saveFlashcardCategories(FlashcardCategoryModel flashcardCategoryModel);
     void editFlashCardCategory(Long id, FlashcardCategoryModel flashcardCategoryModel);

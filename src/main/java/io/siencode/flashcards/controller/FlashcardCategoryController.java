@@ -35,19 +35,20 @@ public class FlashcardCategoryController {
 
     @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable Long id) {
-        if (id == 1) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The default category cannot be deleted");
-        }
-        else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
-            flashcardCategoryService.deleteFlashcardCategory(id);
+         if (flashcardCategoryService.userFlashcardCategoryIsExist(id)) {
+             if (flashcardCategoryService.userFlashcardCategoryIsDefault(id)) {
+                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The default category cannot be deleted");
+             } else {
+                 flashcardCategoryService.deleteFlashcardCategory(id);
+             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID:" + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist for user. ID:" + id);
         }
     }
 
     @PostMapping("/category")
     public void addCategory(@Valid @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        if (flashcardCategoryService.flashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
+        if (flashcardCategoryService.userFlashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The category exists. Can't be duplicated.");
         } else {
             flashcardCategoryService.saveFlashcardCategories(flashcardCategoryModel);
@@ -56,12 +57,16 @@ public class FlashcardCategoryController {
 
     @PutMapping("/category/{id}")
     public void editCategory(@PathVariable Long id, @Valid @RequestBody FlashcardCategoryModel flashcardCategoryModel) {
-        if (id == 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The default category cannot be edited");
-        } else if (flashcardCategoryService.flashcardCategoryIsExist(id)) {
-            flashcardCategoryService.editFlashCardCategory(id, flashcardCategoryModel);
+         if (flashcardCategoryService.userFlashcardCategoryIsExist(id)) {
+             if (flashcardCategoryService.userFlashcardCategoryIsExist(flashcardCategoryModel.getCategoryName())) {
+                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The category exists. Can't be duplicated.");
+             } else if (flashcardCategoryService.userFlashcardCategoryIsDefault(id)) {
+                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The default category cannot be edited");
+             } else {
+                 flashcardCategoryService.editFlashCardCategory(id, flashcardCategoryModel);
+             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist. ID: " + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist for user. ID: " + id);
         }
     }
 

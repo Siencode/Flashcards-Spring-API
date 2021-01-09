@@ -7,6 +7,8 @@ import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.OptionalLong;
+import java.util.stream.Collectors;
 
 @Service
 public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
@@ -27,27 +29,40 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     }
 
     @Override
-    public Boolean flashcardCategoryIsExist(Long id) {
-        // default category id = 1
-        if (id == 1) {
-            return true;
-        } else if (flashcardRepository.existsById(id)) {
+    public Boolean userFlashcardCategoryIsExist(Long id) {
+        if (flashcardCategoryRepository.existsById(id)) {
             String authorizedUserUsername = userService.getAuthorizedUser().getUsername();
-            return flashcardRepository.getOne(id).getUser().getUsername().equals(authorizedUserUsername);
+            return flashcardCategoryRepository.getOne(id).getUser().getUsername().equals(authorizedUserUsername);
         } else {
             return false;
         }
     }
 
     @Override
-    public Boolean flashcardCategoryIsExist(String categoryName) {
+    public Boolean userFlashcardCategoryIsExist(String categoryName) {
         List<FlashcardCategory> flashcardCategories = findAllUserFlashcardCategories();
         if (flashcardCategories == null) {
             return false;
-        } else if (categoryName.toLowerCase().equals("default")) {
+        } else if (categoryName.toLowerCase().equals("Default")) {
             return true;
         } else {
             return flashcardCategories.stream().anyMatch(flashcardCategory -> flashcardCategory.getCategoryName().equals(categoryName));
+        }
+    }
+
+    @Override
+    public Boolean userFlashcardCategoryIsDefault(Long id) {
+        return flashcardCategoryRepository.getOne(id).getCategoryName().equals("Default");
+    }
+
+    @Override
+    public Long findUserDefaultCategoryId() {
+        List<FlashcardCategory> flashcardCategoryList = flashcardCategoryRepository.findAllByUser(userService.getAuthorizedUser());
+        OptionalLong optionalLong = flashcardCategoryList.stream().filter(flashcardCategory -> flashcardCategory.getCategoryName().equals("Default")).mapToLong(FlashcardCategory::getId).findFirst();
+        if (optionalLong.isPresent()) {
+            return optionalLong.getAsLong();
+        } else {
+            throw new NullPointerException();
         }
     }
 
@@ -79,7 +94,8 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
 
     @Override
     public void deleteFlashcardCategory(Long id) {
-        FlashcardCategory defaultFlashcardCategory = flashcardCategoryRepository.findById(1l).get();
+        Long categoryId = findUserDefaultCategoryId();
+        FlashcardCategory defaultFlashcardCategory = flashcardCategoryRepository.findById(categoryId).get();
         FlashcardCategory flashcardCategoryToDelete = flashcardCategoryRepository.findById(id).get();
         // modification of flashcards to default categories before deletion
         flashcardRepository.findAll().stream()
