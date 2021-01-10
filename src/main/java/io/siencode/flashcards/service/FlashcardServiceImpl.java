@@ -34,7 +34,7 @@ public class FlashcardServiceImpl implements FlashcardService{
     }
 
     @Override
-    public Boolean flashcardIsExist(Long id) {
+    public Boolean userFlashcardIsExist(Long id) {
         List<Flashcard> flashcardList = findAllUserFlashcards();
         if (flashcardList == null || flashcardList.isEmpty()) {
             return false;
@@ -80,8 +80,11 @@ public class FlashcardServiceImpl implements FlashcardService{
     }
 
     @Override
-    public List<Flashcard> findAllFlashcardsByCategory(Long categoryId) {
-        return flashcardRepository.findAll().stream().filter(flashcard -> flashcard.getFlashcardCategory().getId() == categoryId).collect(Collectors.toList());
+    public List<Flashcard> findAllUserFlashcardsByCategory(Long categoryId) {
+        String username = userService.getAuthorizedUser().getUsername();
+        return flashcardRepository.findAll().stream()
+                .filter(flashcard -> flashcard.getFlashcardCategory().getId() == categoryId)
+                .filter(flashcard -> flashcard.getUser().getUsername().equals(username)).collect(Collectors.toList());
     }
 
 }

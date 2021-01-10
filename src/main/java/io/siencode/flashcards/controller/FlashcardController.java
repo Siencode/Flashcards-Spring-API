@@ -36,9 +36,9 @@ public class FlashcardController {
         }
     }
 
-    @GetMapping("/flashcards/{id}")
+    @GetMapping("/flashcards/category/{id}")
     public List<Flashcard> getWords(@PathVariable Long id) {
-        List<Flashcard> flashcards = flashcardService.findAllFlashcardsByCategory(id);
+        List<Flashcard> flashcards = flashcardService.findAllUserFlashcardsByCategory(id);
         if (flashcards == null || flashcards.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcards do not exist. Category ID:" + id);
         } else {
@@ -48,12 +48,16 @@ public class FlashcardController {
 
     @PostMapping("/flashcard")
     public void addWord(@Valid @RequestBody FlashcardModel flashcardModel) {
-        flashcardService.saveFlashcard(flashcardModel);
+        if (flashcardCategoryService.userFlashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())){
+            flashcardService.saveFlashcard(flashcardModel);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist for user");
+        }
     }
 
     @PutMapping("/flashcard/{id}")
     public void editFlashcard(@Valid @RequestBody FlashcardModel flashcardModel, @PathVariable Long id) {
-        if (flashcardService.flashcardIsExist(id) && flashcardCategoryService.userFlashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
+        if (flashcardService.userFlashcardIsExist(id) && flashcardCategoryService.userFlashcardCategoryIsExist(flashcardModel.getFlashcardCategoryId())) {
             flashcardService.editFlashcard(id, flashcardModel);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard or category do not exist");
@@ -62,7 +66,7 @@ public class FlashcardController {
 
     @DeleteMapping("/flashcard/{id}")
     public void removeWord(@PathVariable Long id){
-        if (flashcardService.flashcardIsExist(id)) {
+        if (flashcardService.userFlashcardIsExist(id)) {
             flashcardService.deleteFlashcard(id);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard does not exist. ID:" + id);

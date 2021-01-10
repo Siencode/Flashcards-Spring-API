@@ -24,7 +24,7 @@ public class FlashcardCategoryController {
     }
 
     @GetMapping("/categories")
-    public List<FlashcardCategory> getFlashcardCategories() {
+    public List<FlashcardCategory> getUserFlashcardCategories() {
         List<FlashcardCategory> flashcardCategories = flashcardCategoryService.findAllUserFlashcardCategories();
         if (flashcardCategories == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

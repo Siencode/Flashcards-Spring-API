@@ -8,11 +8,11 @@ import java.util.List;
 public interface FlashcardService {
 
     List<Flashcard> findAllUserFlashcards();
-    Boolean flashcardIsExist(Long id);
+    Boolean userFlashcardIsExist(Long id);
     void saveFlashcard(FlashcardModel flashcardModel);
     void editFlashcard(Long id, FlashcardModel flashcardModel);
     void deleteFlashcard(Long id);
-    List<Flashcard> findAllFlashcardsByCategory(Long categoryId);
+    List<Flashcard> findAllUserFlashcardsByCategory(Long categoryId);
 
 
 }

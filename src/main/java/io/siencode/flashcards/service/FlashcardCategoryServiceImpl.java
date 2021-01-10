@@ -8,7 +8,6 @@ import io.siencode.flashcards.repo.FlashcardRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.OptionalLong;
-import java.util.stream.Collectors;
 
 @Service
 public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
