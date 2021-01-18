@@ -1,12 +1,16 @@
 package io.siencode.flashcards.service;
 
+import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.entity.FlashcardCategory;
 import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalLong;
 
 @Service
@@ -25,6 +29,11 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
     @Override
     public List<FlashcardCategory> findAllUserFlashcardCategories() {
         return flashcardCategoryRepository.findAllByUser(userService.getAuthorizedUser());
+    }
+
+    @Override
+    public Page<Flashcard> findAllByFlashcardCategory(FlashcardCategory flashcardCategory, Pageable pageable) {
+        return flashcardRepository.findAllByFlashcardCategory(flashcardCategory, pageable);
     }
 
     @Override
@@ -101,5 +110,10 @@ public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
                 .filter(flashcard -> flashcard.getFlashcardCategory().getId() == flashcardCategoryToDelete.getId())
                 .forEach(flashcard -> flashcard.setFlashcardCategory(defaultFlashcardCategory));
         flashcardCategoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<FlashcardCategory> getOptionalFlashcardCategoryById(Long id) {
+        return flashcardCategoryRepository.findById(id);
     }
 }

@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
 
