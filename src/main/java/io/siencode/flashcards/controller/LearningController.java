@@ -1,12 +1,9 @@
 package io.siencode.flashcards.controller;
 
-import io.siencode.flashcards.entity.Flashcard;
-import io.siencode.flashcards.service.FlashcardCategoryService;
+import io.siencode.flashcards.entity.LearningHistory;
+import io.siencode.flashcards.entity.SelectedFlashcard;
+import io.siencode.flashcards.service.LearningService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,28 +14,42 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api")
 public class LearningController {
 
-    private final FlashcardCategoryService flashcardCategoryService;
+    private final LearningService learningService;
 
     @Autowired
-    public LearningController(FlashcardCategoryService flashcardCategoryService) {
-        this.flashcardCategoryService = flashcardCategoryService;
+    public LearningController(LearningService learningService) {
+        this.learningService = learningService;
     }
 
-    @GetMapping("/learn")
-    public Page<Flashcard> flashcardPage(@RequestParam(name = "category") Long categoryId, @RequestParam Integer size, @RequestParam(name = "page") Integer pageNumber) {
-        try {
-            if (flashcardCategoryService.getOptionalFlashcardCategoryById(categoryId).isEmpty())
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist for user");
-                Pageable pageable = PageRequest.of(pageNumber, size, Sort.unsorted());
-                Page<Flashcard> page = flashcardCategoryService.findAllByFlashcardCategory(flashcardCategoryService.getOptionalFlashcardCategoryById(categoryId).get(), pageable);
-                if (page.isEmpty())
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page is empty");
-                return page;
+    @GetMapping("/learn/new")
+    public LearningHistory createNewLearning(@RequestParam(name = "category") Long categoryId){
+                return learningService.createNewLearning(categoryId);
+    }
 
-        } catch (ResponseStatusException responseStatusException) {
-            throw responseStatusException;
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    @GetMapping("/learn/last")
+    public LearningHistory getLastLearning() {
+        return learningService.getLastLearning();
+    }
+
+
+    @GetMapping("/learn/flashcard/next")
+    public SelectedFlashcard getNextSelectedFlashcard(@RequestParam(name = "id") Long learnID) {
+        if (learningService.learningHistoryIdIsExistForUser(learnID)) {
+            return learningService.getNextFlashcardById(learnID);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID is not found for user");
         }
     }
+
+    @GetMapping("/learn/flashcard/current")
+    public SelectedFlashcard getCurrentSelectedFlashcard(@RequestParam(name = "id") Long learnID) {
+        if (learningService.learningHistoryIdIsExistForUser(learnID)) {
+            return learningService.getCurrentFlashcard(learnID);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID is not found for user");
+        }
+    }
+
+
+
 }

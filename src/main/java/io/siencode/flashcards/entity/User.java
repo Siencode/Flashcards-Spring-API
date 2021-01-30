@@ -41,6 +41,10 @@ public class User implements UserDetails {
         this.enabled = true;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getUsername() {
         return username;
