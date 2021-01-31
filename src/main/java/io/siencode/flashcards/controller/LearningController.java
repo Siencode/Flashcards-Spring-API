@@ -22,8 +22,8 @@ public class LearningController {
     }
 
     @GetMapping("/learn/new")
-    public LearningHistory createNewLearning(@RequestParam(name = "category") Long categoryId){
-                return learningService.createNewLearning(categoryId);
+    public void createNewLearning(@RequestParam(name = "category") Long categoryId){
+                 learningService.createNewLearning(categoryId);
     }
 
     @GetMapping("/learn/last")
@@ -33,21 +33,16 @@ public class LearningController {
 
 
     @GetMapping("/learn/flashcard/next")
-    public SelectedFlashcard getNextSelectedFlashcard(@RequestParam(name = "id") Long learnID) {
-        if (learningService.learningHistoryIdIsExistForUser(learnID)) {
-            return learningService.getNextFlashcardById(learnID);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID is not found for user");
-        }
+    public SelectedFlashcard getNextSelectedFlashcard() {
+            return learningService.getNextFlashcardById();
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID not found for user");
+
     }
 
     @GetMapping("/learn/flashcard/current")
-    public SelectedFlashcard getCurrentSelectedFlashcard(@RequestParam(name = "id") Long learnID) {
-        if (learningService.learningHistoryIdIsExistForUser(learnID)) {
-            return learningService.getCurrentFlashcard(learnID);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID is not found for user");
-        }
+    public SelectedFlashcard getCurrentSelectedFlashcard() {
+            return learningService.getCurrentFlashcard();
+
     }
 
 

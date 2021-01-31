@@ -8,9 +8,8 @@ public class SelectedFlashcard {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne
-    @JoinColumn  (name = "FLASHCARD_ID", referencedColumnName = "id")
-    private Flashcard  flashcard;
+    private String firstSentence;
+    private String secondSentence;
     @ManyToOne
     @JoinColumn (name = "LEARNING_HISTORY_ID", referencedColumnName = "id")
     private LearningHistory learningHistory;
@@ -19,20 +18,28 @@ public class SelectedFlashcard {
         return id;
     }
 
-    public Flashcard getFlashcard() {
-        return flashcard;
-    }
-
-    public void setFlashcard(Flashcard flashcard) {
-        this.flashcard = flashcard;
-    }
-
     public LearningHistory getLearningHistory() {
         return learningHistory;
     }
 
     public void setLearningHistory(LearningHistory learningHistory) {
         this.learningHistory = learningHistory;
+    }
+
+    public String getFirstSentence() {
+        return firstSentence;
+    }
+
+    public void setFirstSentence(String firstSentence) {
+        this.firstSentence = firstSentence;
+    }
+
+    public String getSecondSentence() {
+        return secondSentence;
+    }
+
+    public void setSecondSentence(String secondSentence) {
+        this.secondSentence = secondSentence;
     }
 
     public Boolean getLastSelected() {

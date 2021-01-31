@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface LearningHistoryRepository extends JpaRepository<LearningHistory, Long> {
    List<LearningHistory> findAllByUser (User user);
-   boolean existsByIdAndUserId(Long aLong, Long userId);
 }

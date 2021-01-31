@@ -35,12 +35,12 @@ public class LearningService {
             if (learningHistoryOptional.isPresent()) {
                 return learningHistoryOptional.get();
             } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Last learning is not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Last learning not found");
             }
     }
 
     @Transactional
-    public LearningHistory createNewLearning (Long flashcardCategoryID) {
+    public void createNewLearning (Long flashcardCategoryID) {
         LearningHistory learningHistory = new LearningHistory();
         learningHistory.setCreatedDateTime(LocalDateTime.now());
         learningHistory.setUser(userService.getAuthorizedUser());
@@ -50,7 +50,6 @@ public class LearningService {
         List<Flashcard> flashcardList = flashcardService.findAllUserFlashcardsByCategory(flashcardCategoryID);
         deleteOldSelectedFlashcards();
         shuffleAndSaveNewSelectedFlashcards(flashcardList, learningHistory);
-        return learningHistory;
     }
 
     private void shuffleAndSaveNewSelectedFlashcards(List<Flashcard> flashcards, LearningHistory learningHistory) {
@@ -60,7 +59,8 @@ public class LearningService {
             Collections.shuffle(flashcards);
             flashcards.forEach(flashcard -> {
                 SelectedFlashcard selectedFlashcard = new SelectedFlashcard();
-                selectedFlashcard.setFlashcard(flashcard);
+                selectedFlashcard.setFirstSentence(flashcard.getFirstSentence());
+                selectedFlashcard.setSecondSentence(flashcard.getSecondSentence());
                 selectedFlashcard.isLastSelected(Boolean.FALSE);
                 selectedFlashcard.setLearningHistory(learningHistory);
                 selectedFlashcardRepository.save(selectedFlashcard);
@@ -71,8 +71,9 @@ public class LearningService {
         selectedFlashcardRepository.deleteByLearningHistoryId(getLastLearning().getId());
     }
 
-    public SelectedFlashcard getNextFlashcardById(Long learnID) {
-            List<SelectedFlashcard> flashcardList = selectedFlashcardRepository.findAllByLearningHistoryId(learnID);
+    public SelectedFlashcard getNextFlashcardById() {
+        Long learnID = getLastLearning().getId();
+        List<SelectedFlashcard> flashcardList = selectedFlashcardRepository.findAllByLearningHistoryId(learnID);
         Long currentSelectedFlashcardId = getCurrentFlashcardIdAndChangeStatus(learnID);
         SelectedFlashcard nextFlashcard = flashcardList.stream()
                 .filter(selectedFlashcard -> selectedFlashcard.getId() != currentSelectedFlashcardId)
@@ -99,13 +100,9 @@ public class LearningService {
         }).orElseThrow();
     }
 
-    public SelectedFlashcard getCurrentFlashcard(Long learnID) {
+    public SelectedFlashcard getCurrentFlashcard() {
+        Long learnID = getLastLearning().getId();
         List<SelectedFlashcard> flashcardList = selectedFlashcardRepository.findAllByLearningHistoryId(learnID);
         return flashcardList.stream().filter(SelectedFlashcard::getLastSelected).findFirst().orElse(flashcardList.stream().findFirst().orElseThrow());
-    }
-
-    public Boolean learningHistoryIdIsExistForUser(Long learningHistoryId) {
-        User user = userService.getAuthorizedUser();
-        return learningHistoryRepository.existsByIdAndUserId(learningHistoryId, user.getId());
     }
 }
