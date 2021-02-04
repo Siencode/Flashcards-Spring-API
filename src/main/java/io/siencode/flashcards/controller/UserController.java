@@ -1,7 +1,7 @@
 package io.siencode.flashcards.controller;
 
 import io.siencode.flashcards.model.UserModel;
-import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
+import io.siencode.flashcards.service.implementation.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

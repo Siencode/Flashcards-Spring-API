@@ -1,6 +1,6 @@
 package io.siencode.flashcards.config;
 
-import io.siencode.flashcards.service.UserDetailsServiceImpl;
+import io.siencode.flashcards.service.implementation.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

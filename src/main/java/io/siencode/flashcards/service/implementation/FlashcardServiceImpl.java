@@ -1,4 +1,4 @@
-package io.siencode.flashcards.service;
+package io.siencode.flashcards.service.implementation;
 
 import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.entity.FlashcardCategory;
@@ -6,6 +6,8 @@ import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
+import io.siencode.flashcards.service.FlashcardService;
+import io.siencode.flashcards.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FlashcardServiceImpl implements FlashcardService{
+public class FlashcardServiceImpl implements FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardCategoryRepository flashcardCategoryRepository;

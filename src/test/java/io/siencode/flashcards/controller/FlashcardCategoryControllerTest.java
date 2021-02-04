@@ -3,7 +3,7 @@ package io.siencode.flashcards.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.siencode.flashcards.model.UserModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
-import io.siencode.flashcards.service.FlashcardCategoryServiceImpl;
+import io.siencode.flashcards.service.implementation.FlashcardCategoryServiceImpl;
 import io.siencode.flashcards.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package io.siencode.flashcards.service;
+package io.siencode.flashcards.service.implementation;
 
 import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.repo.UserRepository;

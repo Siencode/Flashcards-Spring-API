@@ -2,11 +2,9 @@ package io.siencode.flashcards.controller;
 
 import io.siencode.flashcards.entity.LearningHistory;
 import io.siencode.flashcards.entity.SelectedFlashcard;
-import io.siencode.flashcards.service.LearningService;
+import io.siencode.flashcards.service.implementation.LearningServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -14,37 +12,35 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api")
 public class LearningController {
 
-    private final LearningService learningService;
+    private final LearningServiceImpl learningServiceImpl;
 
     @Autowired
-    public LearningController(LearningService learningService) {
-        this.learningService = learningService;
+    public LearningController(LearningServiceImpl learningServiceImpl) {
+        this.learningServiceImpl = learningServiceImpl;
     }
 
     @GetMapping("/learn/new")
-    public void createNewLearning(@RequestParam(name = "category") Long categoryId){
-                 learningService.createNewLearning(categoryId);
+    public void createNewLearning(@RequestParam(name = "category") Long categoryId) {
+        if (learningServiceImpl.numberOfUserLearning() > 0)
+            learningServiceImpl.deleteLastSelectedFlashcards();
+        LearningHistory newLearningHistory = learningServiceImpl.createNewLearning();
+        learningServiceImpl.shuffleAndSaveNewSelectedFlashcards(categoryId, newLearningHistory);
     }
 
     @GetMapping("/learn/last")
     public LearningHistory getLastLearning() {
-        return learningService.getLastLearning();
+        return learningServiceImpl.getLastLearning();
     }
 
 
     @GetMapping("/learn/flashcard/next")
     public SelectedFlashcard getNextSelectedFlashcard() {
-            return learningService.getNextFlashcardById();
-            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID not found for user");
-
+            return learningServiceImpl.getNextFlashcardById();
     }
 
     @GetMapping("/learn/flashcard/current")
     public SelectedFlashcard getCurrentSelectedFlashcard() {
-            return learningService.getCurrentFlashcard();
-
+            return learningServiceImpl.getCurrentFlashcard();
     }
-
-
 
 }

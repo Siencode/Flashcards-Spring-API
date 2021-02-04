@@ -1,4 +1,4 @@
-package io.siencode.flashcards.service;
+package io.siencode.flashcards.service.implementation;
 
 import io.siencode.flashcards.entity.Flashcard;
 import io.siencode.flashcards.entity.FlashcardCategory;
@@ -6,6 +6,8 @@ import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.FlashcardCategoryModel;
 import io.siencode.flashcards.repo.FlashcardCategoryRepository;
 import io.siencode.flashcards.repo.FlashcardRepository;
+import io.siencode.flashcards.service.FlashcardCategoryService;
+import io.siencode.flashcards.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import java.util.Optional;
 import java.util.OptionalLong;
 
 @Service
-public class FlashcardCategoryServiceImpl implements FlashcardCategoryService{
+public class FlashcardCategoryServiceImpl implements FlashcardCategoryService {
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardCategoryRepository flashcardCategoryRepository;
