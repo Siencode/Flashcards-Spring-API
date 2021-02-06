@@ -4,10 +4,12 @@ import io.siencode.flashcards.entity.Role;
 import io.siencode.flashcards.entity.User;
 import io.siencode.flashcards.model.UserModel;
 import io.siencode.flashcards.repo.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -27,7 +29,11 @@ public class UserService {
         user.setUsername(userModel.getUsername());
         user.setPassword(passwordEncoder.encode(userModel.getPassword()));
         user.grantAuthority(Role.ROLE_USER);
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "user cannot be added");
+        }
     }
 
     public Boolean userIsExist(String username) {
